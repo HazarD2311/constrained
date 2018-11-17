@@ -4,6 +4,7 @@ import constrained.Constrained
 import constrained.constraints.string.MaxLengthConstraint
 import constrained.constraints.string.MinLengthConstraint
 import constrained.constraints.string.NonEmptyConstraint
+import constrained.constraints.string.PatternConstraint
 import constrained.letFor
 import constrained.stringConstrained
 import org.junit.Test
@@ -12,7 +13,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class ConstrainedTest {
+class StringConstraintTest {
 
     @Test
     fun testStingConstrained_NonEmpty() {
@@ -33,7 +34,13 @@ class ConstrainedTest {
                 constrained.setValueAnd("12")
                         .validate()
                         .any { it is MinLengthConstraint }
-        )//вызванная ошибка - MinLengthConstraint
+        )//вызванная ошибка - MinLengthConstraint: способ 1
+        assertEquals(
+                MaxLengthConstraint(10),
+                constrained.setValueAnd("12345678910")
+                        .validate()
+                        .firstOrNull()
+        )//вызванная ошибка - MinLengthConstraint: способ 2
         assertEquals(3,
                 constrained.setValueAnd("12")
                         .validate()
@@ -50,5 +57,15 @@ class ConstrainedTest {
                         .validate()
                         .letFor<MinLengthConstraint, Int> { it.min }
         )
+    }
+
+    @Test
+    fun testStingConstrained_Pattern() {
+        val stringConstrained = stringConstrained()
+                .apply { add(PatternConstraint("^[0-9]+\$")) }
+
+        assertTrue(stringConstrained.setValueAnd("12322").noError)
+        assertFalse(stringConstrained.setValueAnd("asd").noError)
+        assertFalse(stringConstrained.setValueAnd("").noError)
     }
 }

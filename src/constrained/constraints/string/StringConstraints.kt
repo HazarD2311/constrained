@@ -20,7 +20,7 @@ class NonEmptyConstraint : Constraint<String> {
 /**
  * Ограничение на [min] длину
  */
-class MinLengthConstraint(val min: Int) : Constraint<String> {
+data class MinLengthConstraint(val min: Int) : Constraint<String> {
 
     override fun isValid(value: String) =
             value.length >= min
@@ -29,7 +29,7 @@ class MinLengthConstraint(val min: Int) : Constraint<String> {
 /**
  * Ограничение на [max] длину
  */
-class MaxLengthConstraint(val max: Int) : Constraint<String> {
+data class MaxLengthConstraint(val max: Int) : Constraint<String> {
 
     override fun isValid(value: String): Boolean =
             value.length <= max
@@ -39,20 +39,10 @@ class MaxLengthConstraint(val max: Int) : Constraint<String> {
  * Ограничение строки на паттерн
  * @param regexPattern который должен удовлетворять
  */
-class PatternConstraint(regexPattern: String) : Constraint<String> {
+data class PatternConstraint(val regexPattern: String) : Constraint<String> {
 
     private val pattern: Regex = regexPattern.toRegex()
 
     override fun isValid(value: String) =
             pattern.matches(value)
-}
-
-/**
- * Не может быть "null"
- * * обычно для валидации значение с сервера
- */
-class NonNullConstraint : Constraint<String> {
-
-    override fun isValid(value: String) =
-            value != "null"
 }

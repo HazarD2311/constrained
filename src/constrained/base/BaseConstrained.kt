@@ -5,7 +5,7 @@ package constrained.base
  * Инкапсулирует в себе список [Constraint]
  */
 abstract class BaseConstrained<T>(
-        val constraints: MutableList<Constraint<T>>
+        val constraints: MutableList<Constraint<T>> = mutableListOf()
 ) {
 
     fun add(constraint: Constraint<T>) {

@@ -8,7 +8,7 @@ import constrained.base.Constraint
  * @param max максимальная длина
  *
  * * не самая удачная реализация
- * * лучше использовать отдельно [MinLengthConstraint] и [MaxLengthConstraint]
+ * * лучше использовать отдельно [MinLengthConstraint] и [MaxLengthConstraint] вместе
  */
 class RangeConstraint(var min: Int, var max: Int) : Constraint<String> {
 
@@ -16,7 +16,7 @@ class RangeConstraint(var min: Int, var max: Int) : Constraint<String> {
         private set
 
     init {
-        if (min == max) min = 0 //спросите у сервера почему приходят одинаковые числа
+        if (min == max) min = 0
     }
 
     private val minConstraint = MinLengthConstraint(min)

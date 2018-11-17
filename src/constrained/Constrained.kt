@@ -10,8 +10,12 @@ import constrained.base.IConstrained
  */
 class Constrained<T>(
         private var value: T,
-        constraints: MutableList<Constraint<T>> = mutableListOf()
-) : IConstrained<T>, BaseConstrained<T>(constraints) {
+        vararg constraints: Constraint<T>
+) : IConstrained<T>, BaseConstrained<T>() {
+
+    init {
+        add(*constraints)
+    }
 
     override val noError: Boolean
         get() = validate().isEmpty()
@@ -23,7 +27,7 @@ class Constrained<T>(
     override fun validate(): List<Constraint<T>> =
             constraints.filter { !it.isValid(value) }
 
-    override fun setValueAnd(value: T) = this.apply { setValue(value) }
+    override fun setValueAnd(value: T): Constrained<T> = this.apply { setValue(value) }
 
     override fun setValue(value: T) {
         this.value = value
