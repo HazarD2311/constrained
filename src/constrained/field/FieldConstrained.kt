@@ -8,6 +8,9 @@ import constrained.constraints.string.RangeConstraint
 /**
  * Помечает строковое поле,
  * как имеющее какие-либо ограничения.
+ *
+ * В качестве главное особенности:
+ * * удобный биндинг полей по [fieldName]
  */
 data class FieldConstrained(val fieldName: String, val constrained: Constrained<String>) : IConstrained<String> {
 
@@ -29,7 +32,7 @@ data class FieldConstrained(val fieldName: String, val constrained: Constrained<
         constrained.addAll(foundedConstraints)
     }
 
-    fun isValid() = validate().convert()
+    fun isValid(): ConstraintsError = validate().convert()
 }
 
 /**
