@@ -13,6 +13,9 @@ class Constrained<T>(
         constraints: MutableList<Constraint<T>> = mutableListOf()
 ) : IConstrained<T>, BaseConstrained<T>(constraints) {
 
+    override val noError: Boolean
+        get() = validate().isEmpty()
+
     /**
      * Проверить все ограничения
      * @return список ограничений, которое не прошло помеченное поле
@@ -20,10 +23,7 @@ class Constrained<T>(
     override fun validate(): List<Constraint<T>> =
             constraints.filter { !it.isValid(value) }
 
-    override fun setValueAndValidate(value: T): List<Constraint<T>> {
-        setValue(value)
-        return validate()
-    }
+    override fun setValueAnd(value: T) = this.apply { setValue(value) }
 
     override fun setValue(value: T) {
         this.value = value

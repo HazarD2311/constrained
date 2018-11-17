@@ -11,10 +11,11 @@ import constrained.constraints.string.RangeConstraint
  */
 data class FieldConstrained(val fieldName: String, val constrained: Constrained<String>) : IConstrained<String> {
 
+    override val noError = isValid() == ConstraintsError.NO_ERROR
+
     override fun validate() = constrained.validate()
 
-    override fun setValueAndValidate(value: String) =
-            constrained.setValueAndValidate(value)
+    override fun setValueAnd(value: String) = this.apply { setValue(value) }
 
     override fun setValue(value: String) {
         constrained.setValue(value)
@@ -29,8 +30,6 @@ data class FieldConstrained(val fieldName: String, val constrained: Constrained<
     }
 
     fun isValid() = validate().convert()
-
-    fun noError() = isValid() == ConstraintsError.NO_ERROR
 }
 
 /**
