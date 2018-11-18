@@ -61,8 +61,7 @@ class StringConstraintTest {
 
     @Test
     fun testStingConstrained_Pattern() {
-        val stringConstrained = stringConstrained()
-                .apply { add(PatternConstraint("^[0-9]+\$")) }
+        val stringConstrained = stringConstrained(PatternConstraint("^[0-9]+\$"))
 
         assertTrue(stringConstrained.setValueAnd("12322").noError)
         assertFalse(stringConstrained.setValueAnd("asd").noError)

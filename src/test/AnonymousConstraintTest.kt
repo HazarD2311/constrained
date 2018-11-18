@@ -10,22 +10,23 @@ class AnonymousConstraintTest {
 
     @Test
     fun testAnonymousConstraint_Int() {
-        val constrained = Constrained(0)
-        constrained.add(object : Constraint<Int> {
-            override fun isValid(value: Int): Boolean =
-                    value == 3
-        })
+        val constrained = Constrained(0,
+                object : Constraint<Int> {
+                    override fun isValid(value: Int): Boolean =
+                            value == 3
+                })
+        constrained.add()
         assertTrue(constrained.setValueAnd(3).noError)
         assertFalse(constrained.setValueAnd(2).noError)
     }
 
     @Test
     fun testAnonymousConstraint_String() {
-        val constrained = Constrained("")
-        constrained.add(object : Constraint<String> {
-            override fun isValid(value: String): Boolean =
-                    value == "Привет, мир!"
-        })
+        val constrained = Constrained("",
+                object : Constraint<String> {
+                    override fun isValid(value: String): Boolean =
+                            value == "Привет, мир!"
+                })
         assertTrue(constrained.setValueAnd("Привет, мир!").noError)
         assertFalse(constrained.setValueAnd("Привет, планета!").noError)
     }

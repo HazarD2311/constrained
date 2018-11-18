@@ -1,9 +1,10 @@
 package constrained
 
+import constrained.base.Constraint
 import constrained.constraints.string.NonEmptyConstraint
 
-fun stringConstrained() = Constrained("")
-        .apply { add(NonEmptyConstraint()) }
+fun stringConstrained(vararg constraints: Constraint<String>) = Constrained("", NonEmptyConstraint())
+        .apply { add(*constraints) }
 
 /**
  * Если в списке есть тип [T],
