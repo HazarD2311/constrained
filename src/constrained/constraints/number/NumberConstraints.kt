@@ -14,7 +14,7 @@ class NonZeroConstraint : Constraint<Number> {
 /**
  * Не меньше, чем [min]
  */
-open class MinConstraint(val min: Number) : Constraint<Number> {
+data class MinConstraint(val min: Number) : Constraint<Number> {
 
     override fun isValid(value: Number): Boolean =
             value.toInt() >= min.toInt()
@@ -23,7 +23,7 @@ open class MinConstraint(val min: Number) : Constraint<Number> {
 /**
  * Не больше, чем [max]
  */
-open class MaxConstraint(val max: Number) : Constraint<Number> {
+data class MaxConstraint(val max: Number) : Constraint<Number> {
 
     override fun isValid(value: Number): Boolean =
             value.toInt() < max.toInt()
@@ -32,9 +32,17 @@ open class MaxConstraint(val max: Number) : Constraint<Number> {
 /**
  * Число положительное
  */
-class PositiveNumberConstraint : MinConstraint(0)
+class PositiveNumberConstraint : Constraint<Number> {
+
+    override fun isValid(value: Number): Boolean =
+            MinConstraint(0).isValid(value)
+}
 
 /**
  * Число отрицательное
  */
-class NegativeNumberConstraint : MaxConstraint(0)
+class NegativeNumberConstraint : Constraint<Number> {
+
+    override fun isValid(value: Number): Boolean =
+            MaxConstraint(0).isValid(value)
+}

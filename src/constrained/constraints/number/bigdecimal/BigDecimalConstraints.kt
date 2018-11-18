@@ -15,7 +15,7 @@ class NonZeroBigDecimalConstraint : Constraint<BigDecimal> {
 /**
  * Не меньше, чем [min]
  */
-open class MinBigDecimalConstraint(val min: BigDecimal) : Constraint<BigDecimal> {
+data class MinBigDecimalConstraint(val min: BigDecimal) : Constraint<BigDecimal> {
 
     override fun isValid(value: BigDecimal): Boolean =
             value.isGreaterOrEquals(min)
@@ -24,7 +24,7 @@ open class MinBigDecimalConstraint(val min: BigDecimal) : Constraint<BigDecimal>
 /**
  * Не больше, чем [max]
  */
-open class MaxBigDecimalConstraint(val max: BigDecimal) : Constraint<BigDecimal> {
+data class MaxBigDecimalConstraint(val max: BigDecimal) : Constraint<BigDecimal> {
 
     override fun isValid(value: BigDecimal): Boolean =
             value.isLess(max)
@@ -33,9 +33,17 @@ open class MaxBigDecimalConstraint(val max: BigDecimal) : Constraint<BigDecimal>
 /**
  * Число положительное
  */
-class PositiveBigDecimalConstraint : MinBigDecimalConstraint(BigDecimal.ZERO)
+class PositiveBigDecimalConstraint : Constraint<BigDecimal> {
+
+    override fun isValid(value: BigDecimal): Boolean =
+            MinBigDecimalConstraint(BigDecimal.ZERO).isValid(value)
+}
 
 /**
  * Число отрицательное
  */
-class NegativeBigDecimalConstraint : MaxBigDecimalConstraint(BigDecimal.ZERO)
+class NegativeBigDecimalConstraint : Constraint<BigDecimal> {
+
+    override fun isValid(value: BigDecimal): Boolean =
+            MaxBigDecimalConstraint(BigDecimal.ZERO).isValid(value)
+}

@@ -4,8 +4,10 @@ import constrained.Constrained
 import constrained.constraints.number.*
 import constrained.constraints.number.bigdecimal.NonZeroBigDecimalConstraint
 import constrained.constraints.number.bigdecimal.PositiveBigDecimalConstraint
+import constrained.letFor
 import org.junit.Test
 import java.math.BigDecimal
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -34,6 +36,15 @@ class NumberConstraintTest {
         assertTrue(Constrained(2, PositiveNumberConstraint()).noError)
         assertTrue(Constrained(3.4, PositiveNumberConstraint()).noError)
         assertTrue(Constrained(-2, NegativeNumberConstraint()).noError)
+
+        assertEquals(-3,
+                rangeConstraint.setValueAnd(-10)
+                        .validate()
+                        .letFor<MinConstraint, Number> { it.min })
+        assertEquals(MinConstraint(-3),
+                rangeConstraint.setValueAnd(-10)
+                        .validate()
+                        .firstOrNull())
     }
 
     @Test
